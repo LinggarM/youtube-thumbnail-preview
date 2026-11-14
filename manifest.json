@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Thumbnail Preview",
+  "version": "1.0",
+  "description": "Tampilkan thumbnail video lebih besar saat hover di YouTube",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*"],
+      "css": ["styles.css"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {}
+}

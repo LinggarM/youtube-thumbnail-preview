@@ -1,0 +1,37 @@
+#yt-thumb-preview-popup {
+  position: fixed;
+  z-index: 2147483647;
+  pointer-events: none;
+  background: #000;
+  border: 2px solid #ff0000;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  padding: 4px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+#yt-thumb-preview-popup.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#yt-thumb-preview-popup img {
+  display: block;
+  width: 640px;
+  height: auto;
+  border-radius: 4px;
+  background: #222;
+}
+
+#yt-thumb-preview-popup .yt-preview-title {
+  color: #fff;
+  font-size: 12px;
+  font-family: "Roboto", Arial, sans-serif;
+  padding: 6px 4px 2px;
+  max-width: 480px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
