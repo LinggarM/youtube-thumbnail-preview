@@ -133,6 +133,7 @@
 
   function showPopup(videoId, title, e) {
     if (!isEnabled) return;
+    const p = createPopup();
     const img = p.querySelector('img');
     const titleEl = p.querySelector('.yt-preview-title');
 
@@ -180,6 +181,7 @@
   // Event delegation di document → tahan terhadap YouTube SPA navigation
   document.addEventListener('mouseover', (e) => {
     if (!isEnabled) return;
+    const thumb = e.target.closest(THUMB_SELECTOR);
     if (!thumb) return;
 
     const videoId = getVideoId(thumb);
@@ -201,10 +203,12 @@
 
   document.addEventListener('mousemove', (e) => {
     if (!isEnabled) return;
+    if (popup && popup.classList.contains('visible')) positionPopup(e);
   });
 
   document.addEventListener('mouseout', (e) => {
     if (!isEnabled) return;
+    const thumb = e.target.closest(THUMB_SELECTOR);
     if (!thumb) return;
     clearTimeout(hoverTimer);
     leaveTimer = setTimeout(hidePopup, LEAVE_DELAY);
