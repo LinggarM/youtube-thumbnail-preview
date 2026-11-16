@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Thumbnail Preview Settings</title>
+  <style>
+    body {
+      width: 260px;
+      margin: 0;
+      padding: 16px;
+      font-family: "Roboto", Arial, sans-serif;
+      background: #181818;
+      color: #fff;
+    }
+    h2 {
+      font-size: 14px;
+      margin: 0 0 12px 0;
+      font-weight: 500;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #212121;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+    }
+    .label-text {
+      font-size: 13px;
+      font-weight: 400;
+    }
+    /* Switch toggle styling */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #535353;
+      transition: .2s;
+      border-radius: 20px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #ff0000;
+    }
+    input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+    .status-text {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #aaa;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>YouTube Thumbnail Preview</h2>
+  <div class="setting-item">
+    <span class="label-text">Aktifkan Preview</span>
+    <label class="switch">
+      <input type="checkbox" id="enabledToggle" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="status-text" id="statusText">Status: Aktif</div>
+  <script src="popup.js"></script>
+</body>
+</html>

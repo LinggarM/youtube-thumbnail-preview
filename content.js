@@ -2,6 +2,24 @@
   const POPUP_ID = 'yt-thumb-preview-popup';
   const HOVER_DELAY = 50;
   const LEAVE_DELAY = 50;
+  let isEnabled = true;
+
+  // Check initial storage state
+  chrome.storage.sync.get({ enabled: true }, (data) => {
+    isEnabled = data.enabled;
+  });
+
+  // Listen for storage changes
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName === 'sync' && changes.enabled) {
+      isEnabled = changes.enabled.newValue;
+      if (!isEnabled) {
+        hidePopup();
+        clearTimeout(hoverTimer);
+        clearTimeout(leaveTimer);
+      }
+    }
+  });
 
   // Cascade fallback thumbnail
   const THUMB_QUALITIES = ['maxresdefault', 'sddefault', 'hqdefault', 'mqdefault', 'default'];
@@ -114,7 +132,7 @@
   }
 
   function showPopup(videoId, title, e) {
-    const p = createPopup();
+    if (!isEnabled) return;
     const img = p.querySelector('img');
     const titleEl = p.querySelector('.yt-preview-title');
 
@@ -125,11 +143,11 @@
     img.removeAttribute('src');
 
     const tryQuality = (idx) => {
-      if (requestId !== imageRequestId || idx >= urls.length) return;
+      if (!isEnabled || requestId !== imageRequestId || idx >= urls.length) return;
 
       const candidate = new Image();
       candidate.onload = () => {
-        if (requestId !== imageRequestId) return;
+        if (!isEnabled || requestId !== imageRequestId) return;
 
         // URL kualitas tinggi yang tidak tersedia kadang tetap mengembalikan gambar 120x90.
         if (idx < urls.length - 1 && (candidate.naturalWidth <= 120 || candidate.naturalHeight <= 90)) {
@@ -161,7 +179,7 @@
 
   // Event delegation di document → tahan terhadap YouTube SPA navigation
   document.addEventListener('mouseover', (e) => {
-    const thumb = e.target.closest(THUMB_SELECTOR);
+    if (!isEnabled) return;
     if (!thumb) return;
 
     const videoId = getVideoId(thumb);
@@ -182,11 +200,11 @@
   });
 
   document.addEventListener('mousemove', (e) => {
-    if (popup && popup.classList.contains('visible')) positionPopup(e);
+    if (!isEnabled) return;
   });
 
   document.addEventListener('mouseout', (e) => {
-    const thumb = e.target.closest(THUMB_SELECTOR);
+    if (!isEnabled) return;
     if (!thumb) return;
     clearTimeout(hoverTimer);
     leaveTimer = setTimeout(hidePopup, LEAVE_DELAY);
